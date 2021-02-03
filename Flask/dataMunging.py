@@ -9,7 +9,7 @@ from sklearn.preprocessing import OneHotEncoder
 import pickle
 import utils
 
-def createDummies(data, cols, drop_n_concat = True, exec_type = 'train'):
+def createDummies(data, cols, filePrefix, drop_n_concat = True, exec_type = 'train'):
     if not cols:
         return data
     
@@ -19,10 +19,10 @@ def createDummies(data, cols, drop_n_concat = True, exec_type = 'train'):
     if exec_type == 'train':
         oneHot = OneHotEncoder(drop='if_binary')
         oneHot.fit(data[cols])
-        pickle.dump(oneHot, open('.\Flask\oneHot.pkl','wb'))  #NOTE: writing oneHot as pickle
+        pickle.dump(oneHot, open(f'.\{filePrefix}_oneHot.pkl','wb'))  #NOTE: writing oneHot as pickle
     
     else:
-        oneHot = pickle.load(open('.\Flask\oneHot.pkl', 'rb'))
+        oneHot = pickle.load(open(f'.\{filePrefix}_oneHot.pkl', 'rb'))
 
     dummies = pd.DataFrame(
                         oneHot.transform(data.loc[:,cols]).toarray(),
@@ -54,10 +54,11 @@ def selectCategCols(data, include= [], exclude = []):
     
     return [col for col in categ_cols if col in include] if include else [col for col in categ_cols if col not in exclude]
 
-def createDummiesExcept(data, exec_type = 'train', except_ = []):
+def createDummiesExcept(data, filePrefix, exec_type = 'train', except_ = []):
     """
         :param:
             data - Dataframe to work on
+            filePrefix - prefix to be added when writing/reading .pkl file
             exec_type - {'train', 'test'}
             except_ - cols to ignore when applying dummies/one hot encoding
         
@@ -68,7 +69,7 @@ def createDummiesExcept(data, exec_type = 'train', except_ = []):
     cpy = data.copy()
 
     cols_of_interest = selectCategCols(cpy, exclude= except_)
-    data_to_feed = createDummies(cpy, cols_of_interest,exec_type= exec_type)
+    data_to_feed = createDummies(cpy, cols_of_interest, filePrefix=filePrefix, exec_type= exec_type)
     
     return data_to_feed
 
@@ -127,13 +128,14 @@ def ImputeC_H(data, thresh = 0.5):
         axis = 1
     ), inplace = True )
 
-def minMaxScaler(data, cols, exec_type = 'train'):
+def minMaxScaler(data, cols, filePrefix, exec_type = 'train'):
     """
         scales numeric data
 
         :param:
             data - Dataframe to be scaled
             cols - list of cols in data that are to be scaled
+            filePrefix - prefix to be added when writing/reading .csv file
             exec_type - {'train', 'test'}
         :return:
             None , scales data inplace
@@ -156,10 +158,10 @@ def minMaxScaler(data, cols, exec_type = 'train'):
             data[col] = (data[col] - data[col].min())/(epsilon if denom == 0 else denom)
         
         minMaxInfo = pd.DataFrame(dic)
-        minMaxInfo.to_csv('.\Flask\min_max.csv', index=False)
+        minMaxInfo.to_csv(f'.\{filePrefix}_min_max.csv', index=False)
     
     else:
-        minMaxInfo = pd.read_csv('.\Flask\min_max.csv')
+        minMaxInfo = pd.read_csv(f'.\{filePrefix}_min_max.csv')
         minMaxInfo = minMaxInfo.set_index('cols')
 
         for col in cols:

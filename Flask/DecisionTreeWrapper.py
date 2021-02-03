@@ -5,20 +5,20 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 
 import dataMunging
 
-class LogRegWrapper:
-
+class DecisionTreeWrapper:
+    
     def __init__(self):
+        self.__subfolder = 'dectree'
+        self.__filePrefix = 'dectree'
         self.__model = None
-        self.__subfolder = 'logreg'
-        self.__filePrefix = 'logreg'
-        
+
         if not os.path.exists(self.__subfolder):
             os.mkdir(f'.\\{self.__subfolder}')
-    
+
     def train(self):
         COLS_TO_REMOVE = []
         with open(r'.\cols_to_remove.txt') as file:
@@ -26,14 +26,14 @@ class LogRegWrapper:
         
         data = pd.read_csv(r'.\data\loan-dataset.csv')
         X,y = data.drop(COLS_TO_REMOVE + ['loanid','loanstatus'], axis=1), data.loc[:,'loanstatus'].map({'Y':0,'N':1}).astype('uint8')
-
+        
         X = self.__preProcess(X, exec_type='train')
-
-        self.__model = LogisticRegression()
-        self.__model.fit(X,y)
+        
+        self.__model = DecisionTreeClassifier(criterion='gini', max_leaf_nodes=500, random_state=2, min_samples_split=0.05)
+        self.__model.fit(X, y)
 
         pickle.dump(self.__model, open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl', 'wb'))
-
+    
     def predict(self, X):
         """
             :param:
@@ -47,7 +47,7 @@ class LogRegWrapper:
 
         noProb = self.__model.predict_proba(data)[0,1]
 
-        return 'Y' if noProb <= 0.4 else 'N'
+        return 'Y' if noProb <= 0.5 else 'N'
 
     def __preProcess(self, X, exec_type):
 
@@ -63,13 +63,13 @@ class LogRegWrapper:
         return data
 
 if __name__ == '__main__':
-    obj = LogRegWrapper()
+    obj = DecisionTreeWrapper()
     # obj.train()
     print(obj.predict({
         'married':'Yes',
         'dependents':'1',
-        "applicantincome":1000,
-        'coapplicantincome':50,
+        "applicantincome":10000,
+        'coapplicantincome':500,
         'loanamount':100,
         'loanamountterm':36,
         'credithistory':1,
