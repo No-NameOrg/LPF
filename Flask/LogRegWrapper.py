@@ -64,14 +64,14 @@ class LogRegWrapper:
 
 if __name__ == '__main__':
     obj = LogRegWrapper()
-    # obj.train()
-    print(obj.predict({
-        'married':'Yes',
-        'dependents':'1',
-        "applicantincome":1000,
-        'coapplicantincome':50,
-        'loanamount':100,
-        'loanamountterm':36,
-        'credithistory':1,
-        'propertyarea':'Urban'
-    }))
+    obj.train()
+    # print(obj.predict({
+    #     'married':'Yes',
+    #     'dependents':'1',
+    #     "applicantincome":1000,
+    #     'coapplicantincome':50,
+    #     'loanamount':100,
+    #     'loanamountterm':36,
+    #     'credithistory':1,
+    #     'propertyarea':'Urban'
+    # }))

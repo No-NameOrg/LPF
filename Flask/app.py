@@ -4,28 +4,24 @@ import pickle as p
 import json
 import os
 import sys
-from LogRegWrapper import LogRegWrapper
 
-# insert at 1, 0 is the script path (or '' in REPL)
-# sys.path.insert(1,'/LPF')
+from LogRegWrapper import LogRegWrapper
+from DecisionTreeWrapper import DecisionTreeWrapper
+
 
 app = Flask(__name__)
-# os.system('python DefaultCreditCard.py')
 
-# modelfile = 'models/log-reg-wrapper.pkl'
-# model = p.load(open(modelfile, 'rb'))
-    
 @app.route('/', methods=['POST'])
 def makecalc():
     data = request.get_json()
-    print(data)
-    prediction = LogRegWrapper().predict(data)
-    # response = jsonify(prediction)
-    
-    # response.headers.add('Access-Control-Allow-Origin', 'http://127.0.0.1:5000/')
-    # response.headers.add('Access-Control-Allow-Credentials', 'true')
-    # return prediction
-    return jsonify(result=prediction)
+    logPred = LogRegWrapper().predict(data)
+    decPred = DecisionTreeWrapper().predict(data)
+    return jsonify(
+        logPred = logPred,
+        DecPred = decPred
+    )
 
 if __name__ == '__main__':
+    # os.system('python LogRegWrapper.py')
+    # os.system('python DecisionTreeWrapper.py')
     app.run(threaded=True, port=5000)

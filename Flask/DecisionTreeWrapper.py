@@ -64,14 +64,14 @@ class DecisionTreeWrapper:
 
 if __name__ == '__main__':
     obj = DecisionTreeWrapper()
-    # obj.train()
-    print(obj.predict({
-        'married':'Yes',
-        'dependents':'1',
-        "applicantincome":10000,
-        'coapplicantincome':500,
-        'loanamount':100,
-        'loanamountterm':36,
-        'credithistory':1,
-        'propertyarea':'Urban'
-    }))
+    obj.train()
+    # print(obj.predict({
+    #     'married':'Yes',
+    #     'dependents':'1',
+    #     "applicantincome":10000,
+    #     'coapplicantincome':500,
+    #     'loanamount':100,
+    #     'loanamountterm':36,
+    #     'credithistory':1,
+    #     'propertyarea':'Urban'
+    # }))
