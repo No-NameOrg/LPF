@@ -16,6 +16,7 @@ def makecalc():
     data = request.get_json()
     logPred = LogRegWrapper().predict(data)
     decPred = DecisionTreeWrapper().predict(data)
+    
     return jsonify(
         logPred = logPred,
         DecPred = decPred

@@ -39,3 +39,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
     background-color: white;
     box-shadow: 0 0 10px 0 grey;
 }
+.accordion-container
+{
+   padding: 50px; 
+    
+   
+}
+.loan-text
+{
+    padding: 70px;
+    color: rgb(255, 255, 255);
+}

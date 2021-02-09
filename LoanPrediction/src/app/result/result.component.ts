@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class ResultComponent implements OnInit {
 
   constructor() { }
-  model1 = '';
+  logReg = localStorage.getItem('LogisticRegression');
+  decTree = localStorage.getItem('DecisionTree');
   ngOnInit(): void {
-    this.model1 = localStorage.getItem('model1');
-    
+  
   }
 
 }

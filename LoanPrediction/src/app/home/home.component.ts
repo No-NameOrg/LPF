@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {LoanService} from '../loan.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -18,9 +19,11 @@ export class HomeComponent implements OnInit {
     creditHistory: '',
     propertyArea: '',
   };
+ 
   constructor(private router: Router, private ds: LoanService) { }
 
   ngOnInit(): void {
+
   }
 
 onSubmit(): void
@@ -28,7 +31,9 @@ onSubmit(): void
 
  this.ds.sendData(this.data).subscribe((res) => {
    console.log(res);
-   localStorage.setItem('model1', res['result']);
+   res['logPred'] 
+   localStorage.setItem('LogisticRegression', res['logPred']);
+   localStorage.setItem('DecisionTree', res['DecPred']);
    this.router.navigateByUrl('/result');
   });
 

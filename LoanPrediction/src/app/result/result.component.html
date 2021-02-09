@@ -16,6 +16,49 @@
           </ul>
         </div>
       </nav>
-    
+      <div class="accordion-container">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Logistic Regression
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+               
+                <h2>Logistic regression is a Supervised Learning technique used for predicting the categorical dependent variable using a given set of independent variables. Therefore the outcome must be a categorical or discrete value. It can be either Yes or No, 0 or 1, true or False, etc.</h2>
+                <h2>Hyper-parameters:<br>
+                  Penalty: "l2" <br>
+                  fit_intercept: True <br>
+                  max_iter: 100 <br>
+                  multi_class: auto</h2>
+                <h2>The Model predicted <span *ngIf="logReg === 'Y'" class="text-success display-6"><strong>YES</strong></span> <span *ngIf="logReg === 'N'" class="text-danger display-6"><strong>NO</strong></span> with accuracy "88%".</h2>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+               Decision Tree
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+               <h2>Decision Tree is a Supervised learning technique and a tree-structured classifier, where internal nodes represent the features of a dataset, branches represent the decision rules and each leaf node represents the outcome.</h2>
+               <h2>Hyper-parameters: <br>
+                Criterion:  “gini”   <br>
+                Max_leaf_nodes: 500 <br>
+                Random_state: 2  <br>
+                Min_samples_split: 0.05</h2>
+
+                <h2>The Model predicted <span *ngIf="decTree === 'Y'" class="text-success display-6"><strong>YES</strong></span> <span *ngIf="decTree === 'N'" class="text-danger display-6"><strong>NO</strong></span> with accuracy "73%".</h2>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+     
 </body>
 </html>
