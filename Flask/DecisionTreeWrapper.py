@@ -33,7 +33,34 @@ class DecisionTreeWrapper:
         self.__model.fit(X, y)
 
         pickle.dump(self.__model, open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl', 'wb'))
+
+    def train(self, data, y):
+      
+        X = self.__preProcessNotDic(data, exec_type='train')
+        
+        self.__model = DecisionTreeClassifier(criterion='gini', max_leaf_nodes=500, random_state=2, min_samples_split=0.05)
+        self.__model.fit(X, y)
+
+        # pickle.dump(self.__model, open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl', 'wb'))
     
+    def score(self, X, y):
+        if not self.__model :
+            self.__model = pickle.load(open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl','rb'))
+        
+        goodX = self.__preProcessNotDic(X, 'test')
+
+        return self.__model.score(goodX, y)
+
+    def predictProba(self, X):
+
+        data = self.__preProcessNotDic(X, 'test')
+        
+        if not self.__model :
+            self.__model = pickle.load(open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl','rb'))
+        
+
+        return self.__model.predict_proba(data)[:,1]
+
     def predict(self, X):
         """
             :param:
@@ -47,13 +74,21 @@ class DecisionTreeWrapper:
 
         noProb = self.__model.predict_proba(data)[0,1]
 
-        return 'Y' if noProb <= 0.5 else 'N'
-
+        return 'Y' if noProb <= 0.4 else 'N'
     def __preProcess(self, X, exec_type):
 
         data = pd.DataFrame(X, index=[0]) if exec_type == 'test' else X
 
         data.columns = list(map(lambda col: re.sub(r"\W|_","",col.lower()),data.columns))
+
+        data = dataMunging.basicMunging(data,imputeCredit_History=False)
+        
+        data = dataMunging.createDummiesExcept(data=data,filePrefix=f'{self.__subfolder}\\{self.__filePrefix}',exec_type=exec_type)
+        dataMunging.minMaxScaler(data, ['loanamount', 'loanamountterm'], filePrefix=f'{self.__subfolder}\\{self.__filePrefix}',exec_type=exec_type)
+
+        return data
+
+    def __preProcessNotDic(self, data, exec_type):
 
         data = dataMunging.basicMunging(data,imputeCredit_History=False)
         

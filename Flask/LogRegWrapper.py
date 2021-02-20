@@ -18,7 +18,7 @@ class LogRegWrapper:
         
         if not os.path.exists(self.__subfolder):
             os.mkdir(f'.\\{self.__subfolder}')
-    
+
     def train(self):
         COLS_TO_REMOVE = []
         with open(r'.\cols_to_remove.txt') as file:
@@ -33,6 +33,33 @@ class LogRegWrapper:
         self.__model.fit(X,y)
 
         pickle.dump(self.__model, open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl', 'wb'))
+    
+    def train(self, data, y):
+      
+        X = self.__preProcessNotDic(data, exec_type='train')
+        
+        self.__model = LogisticRegression()
+        self.__model.fit(X,y)
+
+        # pickle.dump(self.__model, open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl', 'wb'))
+    
+    def score(self, X, y):
+        if not self.__model :
+            self.__model = pickle.load(open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl','rb'))
+        
+        goodX = self.__preProcessNotDic(X, 'test')
+
+        return self.__model.score(goodX, y)
+
+    def predictProba(self, X):
+
+        data = self.__preProcessNotDic(X, 'test')
+        
+        if not self.__model :
+            self.__model = pickle.load(open(f'..\\pickle-models\\{self.__filePrefix}-model.pkl','rb'))
+        
+
+        return self.__model.predict_proba(data)[:,1]
 
     def predict(self, X):
         """
@@ -49,11 +76,7 @@ class LogRegWrapper:
 
         return 'Y' if noProb <= 0.4 else 'N'
 
-    def __preProcess(self, X, exec_type):
-
-        data = pd.DataFrame(X, index=[0]) if exec_type == 'test' else X
-
-        data.columns = list(map(lambda col: re.sub(r"\W|_","",col.lower()),data.columns))
+    def __preProcessNotDic(self, data, exec_type):
 
         data = dataMunging.basicMunging(data,imputeCredit_History=False)
         

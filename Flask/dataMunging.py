@@ -30,6 +30,7 @@ def createDummies(data, cols, filePrefix, drop_n_concat = True, exec_type = 'tra
     if drop_n_concat:
         cpy = data.copy()
         cpy.drop(cols, axis = 1, inplace = True)
+        cpy.reset_index(inplace=True)
         cpy = pd.concat([cpy, dummies], axis=1)
         return cpy
 
