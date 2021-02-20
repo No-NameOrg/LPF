@@ -26,12 +26,8 @@
       <div class="dark-overlay">
         <div class="row">
           <div class="col">
-            <div class="container pt-5">
+            <div class="loan-text d-flex flex-column justify-content-center align-items-center">
               <p class="loan-text pb-5">Loan Prediction</p>
-              <p class="d-none d-md-block display-5">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi,
-                nostrum!
-              </p>
             </div>
           </div>
         </div>
@@ -42,9 +38,9 @@
 
         <div class="row p-5">
             <div class="col-md-3">
-              <mat-form-field appearance="fill" required>
+              <mat-form-field appearance="fill" >
                   <mat-label>Married</mat-label>
-                  <mat-select [(value)]="data.married" name="Married">
+                  <mat-select [(value)]="data.married" name="Married" required>
                     <mat-option value="Yes">Yes</mat-option>
                     <mat-option value="No">No</mat-option>
                   </mat-select>
@@ -53,7 +49,7 @@
             <div class="col-md-3">
               <mat-form-field appearance="fill" required>
                   <mat-label>Dependents</mat-label>
-                  <mat-select [(value)]="data.dependents" name="Dependents" >
+                  <mat-select [(value)]="data.dependents" name="Dependents" required>
                     <mat-option value="1">1</mat-option>
                     <mat-option value="2">2</mat-option>
                     <mat-option value="3">3+</mat-option>
@@ -78,21 +74,22 @@
   <div class="col-md-3">
       <mat-form-field appearance="outline">
         <mat-label>Loan Amount</mat-label>
-        <input matInput type="number" [(ngModel)]="data.loanAmount" name="LoanAmount" required>
+        <input matInput type="number" [(ngModel)]="data.loanAmount" min="9" max="700"  name="LoanAmount"  required>
         <mat-hint>Loan Amount in thousands</mat-hint>
+        
       </mat-form-field>
   </div>
   <div class="col-md-3">
       <mat-form-field appearance="outline">
         <mat-label>Loan Amount Term</mat-label>
-        <input matInput type="number" [(ngModel)]="data.loanAmountTerm" name="Loan_Amount_Term" required>
+        <input matInput type="number" [(ngModel)]="data.loanAmountTerm" min="12" max="480" name="Loan_Amount_Term" required>
         <mat-hint>Term of Loan in months</mat-hint>
       </mat-form-field>
   </div>
   <div class="col-md-3">
       <mat-form-field appearance="fill" required>
           <mat-label>Credit History</mat-label>
-          <mat-select [(value)]="data.creditHistory" name="Credit_History">
+          <mat-select [(value)]="data.creditHistory" name="Credit_History" required>
             <mat-option value="0">0</mat-option>
             <mat-option value="1">1</mat-option>
           </mat-select>
@@ -101,7 +98,7 @@
   <div class="col-md-3">
       <mat-form-field appearance="fill" required>
           <mat-label>Property Area</mat-label>
-          <mat-select [(value)]="data.propertyArea" name="Property_Area">
+          <mat-select [(value)]="data.propertyArea" name="Property_Area" required>
             <mat-option value="Urban">Urban</mat-option>
             <mat-option value="Semiurban">Semiurban</mat-option>
             <mat-option value="Rural">Rural</mat-option>
